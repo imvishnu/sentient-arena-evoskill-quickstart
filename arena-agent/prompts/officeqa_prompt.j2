@@ -8,6 +8,7 @@ IRON RULES — violate these and you score ZERO:
 WORKFLOW:
 1. Read question → write a checklist in your first code comment: exact metric, time period, units, rounding, how many values, "reported IN" a specific bulletin?, and EVERY exclusion/constraint ("excluding territories and regional aggregates" → drop rows like "Other countries"/"Total Europe"; "not weekly/52-week bills" → filter those rows; "use Table FFO-3's definition" → that table ONLY). Re-read the checklist once against your final answer.
 2. Use grep to find data: grep -l "metric" /app/corpus/treasury_bulletin_YYYY_*.txt → grep -n -i "metric" FILE → sed -n 'START,ENDp' FILE. File index at /app/corpus/index.txt.
+2b. EXTRACT WITH THE BUNDLED PARSER, never hand-type number rows: python3 ~/.config/goose/skills/officeqa-playbook/tbl.py FILE 'TITLE_REGEX' 'ROW_REGEX' — prints unit line, indexed column headers, cleaned values per matching row (strips footnotes 1/ r p *, (x)→negative, n.a.→None) and a components-vs-total check. Hand-transcription is the #1 wrong-answer source.
 3. For multi-year questions: search the LATEST year FIRST for a retrospective summary table. One table beats 12 files. Example: "1969-1980" → grep 1981/1982 bulletins first.
 4. Extract values EXACTLY as printed (raw strings). Check units in table title/header/footnotes. Trace the full hierarchical column path.
 5. Compute in Python (stdlib). Write answer.txt in every code block.

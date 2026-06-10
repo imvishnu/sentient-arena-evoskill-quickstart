@@ -32,7 +32,9 @@ Budget your steps: ≤ 8 to locate the right table, ≤ 6 to extract, 1–2 to c
 1. **Parse the question into a checklist** (first code comment): exact metric, exact period, units, rounding, how many values, every exclusion/constraint ("excluding territories/regional aggregates", "not weekly bills", "use Table FFO-3's definition", "reported IN <month year>"). Re-read this checklist once against the final answer.
 2. **Pick the right bulletin FIRST** (see PUBLICATION LAG below) — most wrong answers come from the right table in the wrong issue.
 3. **Retrieve with grep, never scroll.** `grep -l "metric" <corpus>/treasury_bulletin_YYYY_*.txt` → `grep -n -i "metric" FILE` → `sed -n 'A,Bp' FILE`. For multi-year questions, grep the LATEST year first for a retrospective summary table (one table beats 12 files).
-4. **Extract raw**, exactly as printed, with an explicit (year, month) per value. Check units in title/header/column/footnote.
+4. **Extract with the bundled extractor — NEVER hand-type rows of numbers.** This skill ships a deterministic parser:
+   `python3 ~/.config/goose/skills/officeqa-playbook/tbl.py FILE 'TITLE_REGEX' 'ROW_REGEX'`
+   It prints the table's unit line, every column header with its index, and each matching row as cleaned numbers (footnote markers `1/ r p *` stripped, `(x)`→negative, `n.a.`→None) plus a components-vs-total identity check. Hand-transcription of long rows is the #1 source of wrong answers. (If the path is missing, `find ~/.config -name tbl.py`; as a last resort extract by hand with the printed per-value mapping.) Check units in title/header/column/footnote.
 5. **Cross-check, compute in stdlib Python, write the answer file** in the same block.
 
 ## PUBLICATION LAG — which bulletin holds the data (top silent killer)
