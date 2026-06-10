@@ -12,7 +12,7 @@ agent:
   skills_dir: "skills_consolidated/"             # <- submit.sh drops your EvoSkill-evolved skill here
   config:
     reasoning_effort: "medium"
-    max_iterations: 100
+    max_iterations: 60   # passing runs finish <40; caps cost of failure spirals (worst seen: $1.83 at ~100 iters)
   env:
     OPENROUTER_API_KEY: "${oc.env:OPENROUTER_API_KEY,''}"   # local-testing only; eval uses Arena's keys
 
